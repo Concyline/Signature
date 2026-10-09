@@ -8,9 +8,9 @@ Este guia descreve a configuração observável para compilar e testar os módul
 
 | Item | Valor observado/necessário |
 |---|---|
-| JDK | JDK compatível com Gradle 8.13 e Android Gradle Plugin 8.12.1; Java 11 é o nível de source/target configurado, não a versão do runtime exigida |
-| Gradle | Use o wrapper incluído; versão configurada: 8.13 |
-| Android Gradle Plugin | 8.13.2 |
+| JDK | JDK 17 ou superior compatível com Gradle 9.6.0 e Android Gradle Plugin 9.4.1; Java 11 é o nível de source/target configurado |
+| Gradle | Use o wrapper incluído; versão configurada: 9.6.0 |
+| Android Gradle Plugin | 9.4.1 |
 | Android SDK | Plataforma API 36 para compilação |
 | Android Build Tools | Versão resolvida pelo Android Gradle Plugin/SDK; não fixada diretamente nos arquivos inspecionados |
 | Dispositivo/emulador | Necessário para executar testes instrumentados e abrir o app demonstrativo; nível mínimo do app: API 23 |
@@ -18,9 +18,9 @@ Este guia descreve a configuração observável para compilar e testar os módul
 
 As dependências Maven e suas versões estão declaradas em `gradle/libs.versions.toml` e nos arquivos `build.gradle`.
 
-**JDK configurado para este ambiente:** Android Studio usa `#GRADLE_LOCAL_JAVA_HOME` em `.idea/gradle.xml`; `.gradle/config.properties` local aponta esse macro para o JBR 17.0.14 instalado em `C:\Users\concy\.jdks\jbr-17.0.14`. O arquivo de configuração local está ignorado pelo Git. Em outra máquina, configure o mesmo macro para um JDK compatível com Gradle 8.13 e AGP 8.13.2; Java 17 é uma opção validada.
+**JDK configurado para este ambiente:** Android Studio usa `#GRADLE_LOCAL_JAVA_HOME` em `.idea/gradle.xml`; `.gradle/config.properties` local aponta esse macro para o JBR 17.0.14 instalado em `C:\Users\concy\.jdks\jbr-17.0.14`. O arquivo de configuração local está ignorado pelo Git. Java 17 é necessário para este Gradle/AGP e também está configurado no `jitpack.yml`.
 
-**Validação (2026-10-09):** a seleção anterior de JBR 25.0.3 falhou com `Unsupported class file major version 69`. Após selecionar JBR 17.0.14, `gradlew.bat --version` confirmou launcher e daemon 17.0.14, e `gradlew.bat test` concluiu com sucesso.
+**Validação (2026-10-09):** Gradle 9.6.0 e `gradlew.bat test` foram executados com JBR 17.0.14 com sucesso.
 
 ## 3. Obter o código
 
@@ -87,7 +87,7 @@ Os arquivos do projeto não declaram variáveis de ambiente para a aplicação. 
 
 ## 8. Limitações conhecidas
 
-- O runtime JDK não está fixado no repositório porque a seleção é local à instalação/ambiente. JBR 17.0.14 validou o build neste ambiente.
+- O runtime JDK local não é compartilhado via Git. JBR 17.0.14 validou o build neste ambiente.
 - A configuração de Gradle JDK não é compartilhada via Git; cada ambiente Android Studio precisa apontar para um JDK compatível.
 - O app não persiste nem transmite assinaturas.
 - Não há tarefa específica de lint configurada/documentada além das tarefas padrão do Android Gradle Plugin.

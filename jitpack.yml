@@ -1,0 +1,8 @@
+jdk:
+  - openjdk17
+
+before_install:
+  - git config --global --add safe.directory /build
+
+install:
+  - ./gradlew -Pgroup=com.github.Concyline.Signature -Pversion=${VERSION} :signature:publishReleasePublicationToMavenLocal --console=plain

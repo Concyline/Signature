@@ -10,8 +10,9 @@ Como se trata de uma biblioteca cliente Android, o código observado não descre
 
 - O módulo `:app` possui build type `release`; `minifyEnabled` está desativado.
 - O módulo `:signature` possui build type `release`; `minifyEnabled` está desativado.
-- O build da biblioteca configura uma publicação Maven com coordenadas `com.github.Concyline:Signature:1.0.2` e associa o AAR de release.
-- Não foi identificada configuração de repositório Maven de destino, publicação autenticada, assinatura ou automação CI/CD. As coordenadas configuradas, isoladamente, não comprovam publicação disponível.
+- O build da biblioteca publica o componente release com coordenadas JitPack `com.github.Concyline.Signature:signature:<tag>`.
+- `jitpack.yml` seleciona OpenJDK 17, declara `/build` como diretório Git seguro no container de build e publica a tarefa Maven local de `:signature`.
+- A existência dessa configuração não comprova que uma tag tenha sido publicada com sucesso.
 
 ## 3. Build local de release
 
@@ -29,12 +30,18 @@ signature/build/outputs/aar/signature-release.aar
 
 Este comando gera um artefato local; não o publica.
 
-## 4. Processo de publicação
+## 4. JitPack
 
-**Pendente:** responsável do projeto deve confirmar o repositório de destino, mecanismo de autenticação, versionamento, assinatura, critérios de aprovação, publicação e procedimento de verificação. Não adicione credenciais ao repositório.
+O comando de instalação customizado do JitPack é:
 
-Até essa definição, não execute publicação ou release com base apenas no bloco `publishing` do Gradle.
+```text
+./gradlew -Pgroup=com.github.Concyline.Signature -Pversion=${VERSION} :signature:publishReleasePublicationToMavenLocal --console=plain
+```
+
+O wrapper está fixado em Gradle 9.6.0, requisito mínimo do AGP 9.4.1. O build local confirmou que esse comando publica o AAR e o POM em Maven Local com as coordenadas esperadas. Para consumidores, a dependência é `com.github.Concyline.Signature:signature:<tag>`.
+
+A tag `1.0.3` já existia antes desta correção; as alterações locais não mudam uma tag já criada. A correção só será usada pelo JitPack depois que os arquivos forem enviados ao GitHub e uma nova tag for criada para o commit corrigido. Não mova tags existentes sem aprovação explícita.
 
 ## 5. Ambientes e rollback
 
-Não foram identificados ambientes de desenvolvimento, homologação ou produção para implantação de servidor, nem branches de release definidos nos arquivos consultados. Não há procedimento oficial de rollback do artefato. A atualização ou retirada de versões publicadas depende da confirmação do processo de distribuição.
+Não há implantação de servidor. Cada nova publicação deve usar uma nova tag Git; não há procedimento documentado para retirar um artefato de uma tag já construída.

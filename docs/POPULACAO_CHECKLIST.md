@@ -10,9 +10,9 @@ O objetivo não é preencher campos por inferência, mas registrar informações
 
 **Documentado com evidência:** arquitetura e módulos, dependências/versões observadas, comandos Gradle, fluxo da View e capacidades de exportação. Criadas especificações da funcionalidade e documentação técnica dos módulos e componente.
 
-**Pendente de confirmação:** URL canônica de clone, matriz oficial de ferramentas/SO, critérios de aceite, suporte/compatibilidade pública, processo e destino de publicação, assinatura/release, acessibilidade/design system e política de armazenamento/privacidade para consumidores.
+**Pendente de confirmação:** URL canônica de clone, matriz oficial de ferramentas/SO, critérios de aceite, suporte/compatibilidade pública, sucesso de uma publicação remota JitPack a partir de uma nova tag, acessibilidade/design system e política de armazenamento/privacidade para consumidores.
 
-Os comandos de build/teste descritos em `SETUP.md` foram derivados das tarefas e configurações Gradle. A primeira execução com JBR 25.0.3 falhou (`Unsupported class file major version 69`); a configuração local foi ajustada para JBR 17.0.14 e `gradlew.bat test` concluiu com sucesso. Links locais da documentação foram verificados. O índice vazio de erros/incidentes significa apenas que não há registros nesta documentação.
+Os comandos de build/teste e publicação descritos em `SETUP.md` e `DEPLOYMENT.md` foram verificados localmente com Gradle 9.6.0/JBR 17.0.14: `gradlew.bat test` e publicação Maven local do módulo `:signature` concluíram com sucesso, produzindo `com.github.Concyline.Signature:signature:1.0.3`. A primeira execução com JBR 25.0.3 falhou (`Unsupported class file major version 69`). O build remoto do JitPack ainda requer uma nova tag contendo a configuração corrigida. Links locais da documentação foram verificados. O índice vazio de erros/incidentes significa apenas que não há registros nesta documentação.
 
 ## 1. Regras de uso
 

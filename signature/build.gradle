@@ -8,6 +8,10 @@ android {
     namespace 'br.com.signature'
     compileSdkVersion 36
 
+    publishing {
+        singleVariant('release')
+    }
+
     defaultConfig {
         minSdk 23
 
@@ -30,13 +34,19 @@ android {
 publishing {
     publications {
         release(MavenPublication) {
-            groupId = 'com.github.Concyline'
-            artifactId = 'Signature'
-            version = '1.0.3'
-            afterEvaluate {
-                artifact("$buildDir/outputs/aar/${project.name}-release.aar") {
-                    builtBy tasks.named("bundleReleaseAar")
-                }
+            groupId = providers.gradleProperty('group')
+                    .getOrElse('com.github.Concyline.Signature')
+            artifactId = 'signature'
+            version = providers.gradleProperty('version').getOrElse('1.0.4')
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
             }
         }
     }

@@ -27,7 +27,7 @@ Não foram encontrados módulos de servidor, banco de dados, persistência de as
 |---|---|
 | Plataforma | Android |
 | Linguagem | Java |
-| Build | Gradle Wrapper 8.13; Android Gradle Plugin 8.13.2 |
+| Build | Gradle Wrapper 9.6.0; Android Gradle Plugin 9.4.1 |
 | SDK de compilação | Android API 36 |
 | SDK mínimo | API 23 nos módulos `app` e `signature` |
 | SDK alvo | API 36 no módulo `app` |
@@ -97,7 +97,7 @@ Não foram encontrados contratos HTTP, banco de dados, mensageria ou chamadas de
 
 ## 9. Distribuição e decisões registradas
 
-O build da biblioteca aplica `maven-publish` e declara uma publicação com `groupId` `com.github.Concyline`, `artifactId` `Signature` e versão `1.0.2`. Não foi encontrado repositório Maven de destino, configuração de credenciais, assinatura de artefato ou pipeline de publicação. Portanto, esses metadados não comprovam que a versão foi publicada ou que a distribuição esteja operacional.
+O build da biblioteca aplica `maven-publish` e declara publicação do componente `release` como `com.github.Concyline.Signature:signature:<version>`. O `jitpack.yml` seleciona OpenJDK 17 e chama a tarefa de publicação do módulo `:signature`. A publicação Maven local foi validada; o sucesso remoto de uma nova tag ainda não foi confirmado.
 
 Não foram encontrados registros separados de decisões arquiteturais (ADRs). O repositório não documenta política de compatibilidade binária/API nem estratégia de versionamento da biblioteca além dos valores configurados no build.
 

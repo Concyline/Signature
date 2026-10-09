@@ -47,6 +47,7 @@ Todas as alterações documentais e técnicas relevantes devem ser registradas a
 - Documentada a arquitetura Android observada, os módulos `:app` e `:signature`, instruções de configuração e limites conhecidos da distribuição.
 - Registradas as capacidades atuais de captura e exportação de assinaturas e a documentação técnica dos módulos e da View `SignaturePad`.
 - Adaptação de cor da `SignaturePad` para modo noturno, com traço claro, recoloração do desenho existente e SVG com a cor efetiva; tela de demonstração usa superfície temática e prévia transparente.
+- Adicionada configuração JitPack para JDK 17, diretório Git seguro no container remoto e publicação do módulo `:signature` em Maven Local.
 - Criado `POPULACAO_CHECKLIST.md` com o fluxo para transformar o scaffold documental em documentação oficial de um projeto real.
 - Adicionado o checklist ao índice e à árvore de documentação do `AGENTS.md`.
 - Criados templates para funcionalidades, planos, erros, incidentes, lições aprendidas, componentes compartilhados e documentação técnica de módulos.
@@ -60,7 +61,8 @@ Todas as alterações documentais e técnicas relevantes devem ser registradas a
 
 ### Changed
 
-- Atualizado o Android Gradle Plugin de 8.12.1 para 8.13.2, conforme aprovado durante esta tarefa.
+- Atualizado o wrapper Gradle para 9.6.0 para compatibilidade com AGP 9.4.1.
+- Configurada a publicação JitPack do módulo com coordenadas `com.github.Concyline.Signature:signature:<tag>`.
 - Reforçada a distinção entre template genérico, hipótese e decisão oficial.
 - Corrigidas pequenas inconsistências textuais nos documentos de conhecimento e aprendizado.
 - Melhorado o `AGENTS.md` com hierarquia de prioridades, níveis de autonomia, protocolo de evidências, validação adaptativa, formato de saída, regras de débito técnico e referências de ferramentas mais genéricas.
