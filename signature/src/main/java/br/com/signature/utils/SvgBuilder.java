@@ -14,6 +14,10 @@ public class SvgBuilder {
     }
 
     public String build(final int width, final int height) {
+        return build(width, height, 0xFF000000);
+    }
+
+    public String build(final int width, final int height, final int strokeColor) {
         if (isPathStarted()) {
             appendCurrentPath();
         }
@@ -39,7 +43,9 @@ public class SvgBuilder {
                 .append("stroke-linejoin=\"round\" ")
                 .append("stroke-linecap=\"round\" ")
                 .append("fill=\"none\" ")
-                .append("stroke=\"black\"")
+                .append("stroke=\"")
+                .append(String.format("#%06X", strokeColor & 0xFFFFFF))
+                .append("\"")
                 .append(">")
                 .append(mSvgPathsBuilder)
                 .append("</g>")

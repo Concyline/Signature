@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bitmap signatureBitmap = mSignaturePad.getSignatureBitmap();
+                Bitmap signatureBitmap = mSignaturePad.getTransparentSignatureBitmap();
 
                 ImageView imageView = findViewById(R.id.imageView);
 

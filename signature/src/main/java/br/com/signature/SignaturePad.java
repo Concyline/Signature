@@ -1,6 +1,7 @@
 package br.com.signature;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -8,6 +9,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -49,6 +52,8 @@ public class SignaturePad extends View {
     //Configurable parameters
     private int mMinWidth;
     private int mMaxWidth;
+    private int mConfiguredPenColor = Color.BLACK;
+    private int mEffectivePenColor = Color.BLACK;
     private float mVelocityFilterWeight;
     private OnSignedListener mOnSignedListener;
     private boolean mClearOnDoubleClick;
@@ -79,12 +84,13 @@ public class SignaturePad extends View {
         try {
             mMinWidth = a.getDimensionPixelSize(R.styleable.SignaturePad_penMinWidth, convertDpToPx(DEFAULT_ATTR_PEN_MIN_WIDTH_PX));
             mMaxWidth = a.getDimensionPixelSize(R.styleable.SignaturePad_penMaxWidth, convertDpToPx(DEFAULT_ATTR_PEN_MAX_WIDTH_PX));
-            mPaint.setColor(a.getColor(R.styleable.SignaturePad_penColor, DEFAULT_ATTR_PEN_COLOR));
+            mConfiguredPenColor = a.getColor(R.styleable.SignaturePad_penColor, DEFAULT_ATTR_PEN_COLOR);
             mVelocityFilterWeight = a.getFloat(R.styleable.SignaturePad_velocityFilterWeight, DEFAULT_ATTR_VELOCITY_FILTER_WEIGHT);
             mClearOnDoubleClick = a.getBoolean(R.styleable.SignaturePad_clearOnDoubleClick, DEFAULT_ATTR_CLEAR_ON_DOUBLE_CLICK);
         } finally {
             a.recycle();
         }
+        updatePenColor(isNightMode());
 
         //Fixed parameters
         mPaint.setAntiAlias(true);
@@ -148,7 +154,56 @@ public class SignaturePad extends View {
      * @param color the color.
      */
     public void setPenColor(int color) {
-        mPaint.setColor(color);
+        mConfiguredPenColor = color;
+        updatePenColor(isNightMode());
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        updatePenColor(isNightMode(newConfig));
+    }
+
+    static int resolvePenColor(int configuredColor, boolean nightMode) {
+        return nightMode ? Color.WHITE : configuredColor;
+    }
+
+    private boolean isNightMode() {
+        return isNightMode(getResources().getConfiguration());
+    }
+
+    private boolean isNightMode(Configuration configuration) {
+        return (configuration.uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                == Configuration.UI_MODE_NIGHT_YES;
+    }
+
+    private void updatePenColor(boolean nightMode) {
+        int penColor = resolvePenColor(mConfiguredPenColor, nightMode);
+        if (penColor == mEffectivePenColor) {
+            return;
+        }
+
+        mEffectivePenColor = penColor;
+        mPaint.setColor(penColor);
+        if (mSignatureBitmap != null) {
+            recolorSignatureBitmap();
+        }
+        invalidate();
+    }
+
+    private void recolorSignatureBitmap() {
+        Bitmap recoloredBitmap = Bitmap.createBitmap(
+                mSignatureBitmap.getWidth(),
+                mSignatureBitmap.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(recoloredBitmap);
+        Paint colorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        colorPaint.setColorFilter(new PorterDuffColorFilter(
+                mEffectivePenColor,
+                PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(mSignatureBitmap, 0, 0, colorPaint);
+        mSignatureBitmap = recoloredBitmap;
+        mSignatureBitmapCanvas = canvas;
     }
 
     /**
@@ -261,7 +316,7 @@ public class SignaturePad extends View {
     public String getSignatureSvg() {
         int width = getTransparentSignatureBitmap().getWidth();
         int height = getTransparentSignatureBitmap().getHeight();
-        return mSvgBuilder.build(width, height);
+        return mSvgBuilder.build(width, height, mEffectivePenColor);
     }
 
     public Bitmap getSignatureBitmap() {
@@ -296,6 +351,7 @@ public class SignaturePad extends View {
 
             Canvas canvas = new Canvas(mSignatureBitmap);
             canvas.drawBitmap(signature, drawMatrix, null);
+            recolorSignatureBitmap();
             setIsEmpty(false);
             invalidate();
         }
