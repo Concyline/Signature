@@ -28,6 +28,11 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void documentBitmapPenColorIsAlwaysBlack() {
+        assertEquals(0xFF000000, SignaturePad.resolveDocumentPenColor());
+    }
+
+    @Test
     public void svgUsesTheResolvedPenColor() {
         assertTrue(new SvgBuilder().build(100, 100, 0xFFFFFFFF).contains("stroke=\"#FFFFFF\""));
     }

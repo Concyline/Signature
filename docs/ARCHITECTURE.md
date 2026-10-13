@@ -63,7 +63,7 @@ Aplicativo Android demonstrativo com uma `MainActivity` e um layout. Exibe a `Si
 
 A classe também expõe métodos para configurar cor e larguras, limpar e consultar o estado vazio, instalar `OnSignedListener`, recuperar a lista de pontos, restaurar uma bitmap e obter a assinatura como bitmap ou SVG.
 
-`getTransparentSignatureBitmap()` retorna a bitmap transparente; a variante com `trimBlankSpace=true` pode retornar `null` quando não há traço. `getSignatureBitmap()` compõe a imagem sobre fundo branco. `getSignatureSvg()` serializa caminhos SVG; a implementação observada escreve o traço SVG em preto, independentemente da cor configurada para a bitmap.
+`getTransparentSignatureBitmap()` retorna a bitmap transparente na cor efetiva do desenho; a variante com `trimBlankSpace=true` pode retornar `null` quando não há traço. `getSignatureBitmap()` produz a imagem para documentos, sempre com fundo branco e escrita preta. `getSignatureSvg()` serializa caminhos SVG na cor efetiva do desenho.
 
 O estado visual é salvo/restaurado pelo mecanismo de estado da View. Não foi encontrada gravação permanente dos dados da assinatura.
 

@@ -168,6 +168,10 @@ public class SignaturePad extends View {
         return nightMode ? Color.WHITE : configuredColor;
     }
 
+    static int resolveDocumentPenColor() {
+        return Color.BLACK;
+    }
+
     private boolean isNightMode() {
         return isNightMode(getResources().getConfiguration());
     }
@@ -324,7 +328,11 @@ public class SignaturePad extends View {
         Bitmap whiteBgBitmap = Bitmap.createBitmap(originalBitmap.getWidth(), originalBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(whiteBgBitmap);
         canvas.drawColor(Color.WHITE);
-        canvas.drawBitmap(originalBitmap, 0, 0, null);
+        Paint documentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        documentPaint.setColorFilter(new PorterDuffColorFilter(
+                resolveDocumentPenColor(),
+                PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(originalBitmap, 0, 0, documentPaint);
         return whiteBgBitmap;
     }
 

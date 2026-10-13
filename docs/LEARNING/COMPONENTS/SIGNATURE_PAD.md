@@ -41,4 +41,4 @@ O layout precisa declarar `xmlns:app="http://schemas.android.com/apk/res-auto"` 
 
 ## 6. Restrições
 
-A saída `getSignatureBitmap()` mantém fundo branco; use a bitmap transparente para exibir a assinatura sobre uma superfície escura. A variante de bitmap com corte pode retornar `null` para uma área vazia. Há testes unitários para resolução de cor dia/noite e cor de SVG.
+`getSignatureBitmap()` retorna uma imagem para documentos, sempre com fundo branco e escrita preta, independentemente do tema. Use `getTransparentSignatureBitmap()` para preservar a cor efetiva do traço, inclusive a branca no modo noturno, por exemplo ao exibir sobre uma superfície escura. A variante transparente com corte pode retornar `null` para uma área vazia.

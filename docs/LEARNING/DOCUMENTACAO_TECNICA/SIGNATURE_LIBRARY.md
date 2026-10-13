@@ -36,11 +36,11 @@ Atributos XML: `penMinWidth`, `penMaxWidth`, `penColor`, `velocityFilterWeight`,
 
 ## 6. Saídas e limitações observadas
 
-- `getTransparentSignatureBitmap()` entrega a bitmap da área de desenho.
-- `getSignatureBitmap()` desenha a bitmap sobre fundo branco.
+- `getTransparentSignatureBitmap()` entrega a bitmap da área de desenho na cor efetiva do traço.
+- `getSignatureBitmap()` gera a saída para documentos, sempre com fundo branco e escrita preta, inclusive no modo noturno.
 - `getTransparentSignatureBitmap(true)` tenta cortar áreas vazias e retorna `null` se não há pixels desenhados.
 - `getSignatureSvg()` gera SVG usando a cor efetiva da caneta, incluindo branco no modo noturno.
-- `getSignatureBitmap()` continua compondo a imagem sobre fundo branco; para exibição sobre superfícies escuras, use a bitmap transparente.
+- Para exibir a assinatura sobre superfícies escuras, use a bitmap transparente; ela mantém a cor efetiva do traço.
 - `setSignatureBitmap()` ajusta a bitmap fornecida aos limites da View usando `ScaleToFit.CENTER`.
 - Não há persistência do desenho além do estado transitório/restaurável da View.
 
